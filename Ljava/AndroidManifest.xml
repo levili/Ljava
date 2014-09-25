@@ -12,9 +12,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:name="com.l.activity.LApplication"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.l.activity.MainActivity_"
+            android:name="com.l.activity.TextAvtivity_"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
             <intent-filter>

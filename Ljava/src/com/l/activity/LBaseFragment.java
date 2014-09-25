@@ -25,7 +25,7 @@ public abstract class LBaseFragment extends Fragment {
 	protected FragmentCallBack mCallBack;
 
 	public interface FragmentCallBack {
-		public void callBack(Integer fragmentId, String data);
+		public void fCallBack(Integer fragmentId, String data);
 	}
 
 	@Override

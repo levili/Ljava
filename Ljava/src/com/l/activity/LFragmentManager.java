@@ -4,7 +4,11 @@ import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Stack;
+
+import com.l.utils.CheckUtils;
+
 import android.R.bool;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -12,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.widget.Adapter;
 
 /**
  * @ClassName: ActivityManager
@@ -46,7 +51,8 @@ public class LFragmentManager {
 	/**
 	 * @Description: 添加一个Fragment
 	 */
-	public void intoAStack(LBaseFragment fragment) {
+	@SuppressLint("UseSparseArrays")
+	private void intoAStack(LBaseFragment fragment) {
 		if (fragmentMap == null) {
 			fragmentMap = new HashMap<Integer, LBaseFragment>();
 		}
@@ -111,15 +117,18 @@ public class LFragmentManager {
 	 * @Description: 切换当前fargment，如果当前fargment则返回false
 	 */
 	private LBaseFragment currentFm;
-
+	private LBaseFragment lastFm;
 	@SuppressWarnings("unused")
-	private boolean refreshFragment(
+	public boolean refreshFragment(
 			Class<? extends LBaseFragment> targetFramentClass, Bundle bundle,
 			boolean isStack, int animRes) {
-		if (currentFm != null && currentFm.getClass() == targetFramentClass) {
+		if (null!= currentFm && currentFm.getClass() == targetFramentClass) {
 			return false;// 如果相同直接方法false，不刷新
 		} else {
 			try {
+				if (null!= currentFm) {
+					lastFm = currentFm;
+				}
 				mTransaction = mfmManager.beginTransaction();
 				currentFm = targetFramentClass.newInstance();
 				if (null != bundle) {
@@ -133,11 +142,23 @@ public class LFragmentManager {
 					mTransaction.setTransition(animRes);
 				}
 				mTransaction.commitAllowingStateLoss();
+				if(CheckUtils.isNullOrEmpty(fragmentMap.get(currentFm.getFragmentId()))){
+					intoAStack(currentFm);
+				}
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
 			}
+		}
+	}
+	/**
+	 * fragment 返回鍵重置
+	 */
+	public void notifyCurrentALastFm(){
+		if (null!=currentFm&&null!=lastFm) {
+			currentFm = lastFm;
+			lastFm = currentFm;
 		}
 	}
 }
