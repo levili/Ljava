@@ -1,5 +1,7 @@
 package com.l.activity;
 
+import android.app.Activity;
+
 import com.l.utils.LogUtils;
 import com.library.ljava.R;
 
@@ -29,4 +31,10 @@ public class TextAvtivity extends LBaseFragmentActivity {
 	protected Integer getActivityLayoutRes() {
 		return R.layout.main;
 	}
+
+	@Override
+	protected void onFirstFragment(LFragmentManager mg) {
+		mg.refreshFragment(TextFragment.class, null, true, 0);
+	}
+
 }

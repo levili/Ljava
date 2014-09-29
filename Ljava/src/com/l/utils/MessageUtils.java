@@ -1,7 +1,11 @@
 package com.l.utils;
 
+import org.androidannotations.annotations.UiThread;
+
+import com.l.activity.LActivityManager;
 import com.l.activity.LApplication;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -22,7 +26,6 @@ public class MessageUtils {
 	private volatile static MessageUtils instance = null;
 	private static Toast mTextToast;
 	private static Toast mImgToast;
-	private static Handler mHandler = new Handler(Looper.getMainLooper());
 	private static Context mContext;
 
 	public static MessageUtils getInstance() {
@@ -75,17 +78,17 @@ public class MessageUtils {
 		mImgToast.setView(ll);
 		mImgToast.show();
 	}
-
 	private void showMessage(final String msg, final int len) {
+		Activity currentActivity = LActivityManager.getInstance().getCurrentActivity();
 		if (CheckUtils.isNullOrEmpty(mTextToast)) {
 			LogUtils.getInstance().e("Toast" + ERROR);
 		} else {
 			new Thread(new Runnable() {
 				public void run() {
-					mHandler.post(new Runnable() {
+					LApplication.appHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							synchronized (LApplication.appContext) {
+							synchronized (LActivityManager.getInstance().getCurrentActivity()) {
 								if (mTextToast != null) {
 									mTextToast.cancel();
 								} else {

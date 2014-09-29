@@ -43,7 +43,7 @@ public class LActivityManager {
 	/**
 	 * @Description:获取最后一个Activity
 	 */
-	public Activity currentActivity() {
+	public Activity getCurrentActivity() {
 		if (activityStack == null || activityStack.isEmpty()) {
 			return null;
 		}

@@ -40,6 +40,9 @@ public class LFragmentManager {
 				if (instance == null) {
 					instance = new LFragmentManager();
 				}
+				if (CheckUtils.isNullOrEmpty(fragmentMap)) {
+					fragmentMap = new HashMap<Integer, LBaseFragment>();
+				}
 			}
 		}
 		return instance;
@@ -53,9 +56,6 @@ public class LFragmentManager {
 	 */
 	@SuppressLint("UseSparseArrays")
 	private void intoAStack(LBaseFragment fragment) {
-		if (fragmentMap == null) {
-			fragmentMap = new HashMap<Integer, LBaseFragment>();
-		}
 		fragmentMap.put(fragment.getFragmentId(), fragment);
 	}
 
@@ -118,15 +118,16 @@ public class LFragmentManager {
 	 */
 	private LBaseFragment currentFm;
 	private LBaseFragment lastFm;
+
 	@SuppressWarnings("unused")
 	public boolean refreshFragment(
 			Class<? extends LBaseFragment> targetFramentClass, Bundle bundle,
 			boolean isStack, int animRes) {
-		if (null!= currentFm && currentFm.getClass() == targetFramentClass) {
+		if (null != currentFm && currentFm.getClass() == targetFramentClass) {
 			return false;// 如果相同直接方法false，不刷新
 		} else {
 			try {
-				if (null!= currentFm) {
+				if (null != currentFm) {
 					lastFm = currentFm;
 				}
 				mTransaction = mfmManager.beginTransaction();
@@ -142,7 +143,8 @@ public class LFragmentManager {
 					mTransaction.setTransition(animRes);
 				}
 				mTransaction.commitAllowingStateLoss();
-				if(CheckUtils.isNullOrEmpty(fragmentMap.get(currentFm.getFragmentId()))){
+				if (CheckUtils.isNullOrEmpty(fragmentMap.get(currentFm
+						.getFragmentId()))) {
 					intoAStack(currentFm);
 				}
 				return true;
@@ -152,11 +154,12 @@ public class LFragmentManager {
 			}
 		}
 	}
+
 	/**
 	 * fragment 返回鍵重置
 	 */
-	public void notifyCurrentALastFm(){
-		if (null!=currentFm&&null!=lastFm) {
+	public void notifyCurrentALastFm() {
+		if (null != currentFm && null != lastFm) {
 			currentFm = lastFm;
 			lastFm = currentFm;
 		}

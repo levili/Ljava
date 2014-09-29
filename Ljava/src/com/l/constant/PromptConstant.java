@@ -1,9 +1,9 @@
 package com.l.constant;
 
 public class PromptConstant {
-	public static final String CANCEL = "取消";
-	public static final String ERROR = "错误";
-	public static final String SUCCESS = "成功";
-	public static final String INFORMATION = "信息";
+	public static final String CANCEL = "鍙栨秷";
+	public static final String ERROR = "閿欒";
+	public static final String SUCCESS = "鎴愬姛";
+	public static final String INFORMATION = "娑堟伅";
 	public static final String INFORMATION_ERROR = ERROR+INFORMATION;
 }

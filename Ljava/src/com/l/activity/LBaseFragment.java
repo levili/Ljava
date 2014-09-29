@@ -22,6 +22,8 @@ public abstract class LBaseFragment extends Fragment {
 
 	protected abstract Integer getFragmentId();
 
+	protected abstract void initFargment(View mianView);
+
 	protected FragmentCallBack mCallBack;
 
 	public interface FragmentCallBack {
@@ -48,6 +50,7 @@ public abstract class LBaseFragment extends Fragment {
 		if (parent != null) {
 			parent.removeView(rootview);
 		}
+		initFargment(rootview);
 		return rootview;
 	}
 

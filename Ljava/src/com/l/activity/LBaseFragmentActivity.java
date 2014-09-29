@@ -11,21 +11,25 @@ public abstract class LBaseFragmentActivity extends FragmentActivity implements
 	private FragmentManager mManager;
 	protected LActivityManager mAManager;
 
+	protected LFragmentManager mFragmentMg;
+
 	protected abstract Integer getActivityLayoutRes();
 
 	protected abstract Integer getFragmentLayoutId();
 
-	protected LFragmentManager mFragmentMg;
+	protected abstract void onFirstFragment(LFragmentManager mg);
+
 
 	@Override
 	protected void onCreate(Bundle bundle) {
+		super.onCreate(bundle);
+		setContentView(getActivityLayoutRes());
 		mManager = getSupportFragmentManager();
 		mFragmentMg = LFragmentManager.getInstance(mManager,
 				getFragmentLayoutId());
 		mAManager = LActivityManager.getInstance();
 		mAManager.intoAStack(this);
-		setContentView(getActivityLayoutRes());
-		super.onCreate(bundle);
+		onFirstFragment(mFragmentMg);
 	}
 
 	@Override
