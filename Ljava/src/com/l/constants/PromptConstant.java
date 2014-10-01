@@ -1,4 +1,4 @@
-package com.l.constant;
+package com.l.constants;
 
 public class PromptConstant {
 	public static final String CANCEL = "取消";

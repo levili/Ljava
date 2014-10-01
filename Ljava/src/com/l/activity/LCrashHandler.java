@@ -93,16 +93,16 @@ public class LCrashHandler implements UncaughtExceptionHandler {
 			return false;
 		}
 		// 使用Toast来显示异常信息
-		new Thread() {
-			@Override
-			public void run() {
+//		new Thread() {
+//			@Override
+//			public void run() {
 				Looper.prepare();
-				Toast.makeText(mContext, "即将退出", 1);
+				String localizedMessage = ex.getLocalizedMessage();
 //				MessageUtils.getInstance().showCollapseDialog(
 //						ex.getLocalizedMessage());
 				Looper.loop();
-			}
-		}.start();
+//			}
+//		}.start();
 		// 收集设备参数信息
 		collectDeviceInfo(mContext);
 		// 保存日志文件

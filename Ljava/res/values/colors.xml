@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="report_exitbt_normal">#95444444</color>
+    <color name="report_exitbt_selected">#05444444</color>
+
+</resources>

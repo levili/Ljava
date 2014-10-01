@@ -121,12 +121,13 @@ public class LActivityManager {
 	/**
 	 * @Description:退出应用
 	 */
-	public void AppExit(Context context) {
+	public void AppExit() {
 		try {
 			finishAllActivity();
-			ActivityManager activityMgr = (ActivityManager) context
+			ActivityManager activityMgr = (ActivityManager) getCurrentActivity()
 					.getSystemService(Context.ACTIVITY_SERVICE);
-			activityMgr.killBackgroundProcesses(context.getPackageName());
+			activityMgr.killBackgroundProcesses(getCurrentActivity()
+					.getPackageName());
 			System.exit(0);
 		} catch (Exception e) {
 			System.exit(0);

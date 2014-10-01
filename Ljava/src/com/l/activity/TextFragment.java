@@ -1,10 +1,7 @@
 package com.l.activity;
 
-import org.androidannotations.annotations.ViewById;
-
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
 
 import com.l.utils.MessageUtils;
 import com.library.ljava.R;
@@ -22,13 +19,16 @@ public class TextFragment extends LBaseFragment {
 		return TEXT_FRAGMENTID;
 	}
 
+	private String aa = null;
+	private int u;
+
 	@Override
 	protected void initFargment(View mianView) {
 		View findViewById = mianView.findViewById(R.id.myTextView);
 		findViewById.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-					MessageUtils.getInstance().toastLong("你好");
+				u = Integer.parseInt(aa) + 1;
 			}
 		});
 	}

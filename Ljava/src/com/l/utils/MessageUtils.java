@@ -1,11 +1,9 @@
 package com.l.utils;
 
-import org.androidannotations.annotations.UiThread;
-
 import com.l.activity.LActivityManager;
 import com.l.activity.LApplication;
+import com.l.widget.ReportLogDialog;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
@@ -13,14 +11,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Handler;
-import android.os.Looper;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import static com.l.constant.PromptConstant.*;
+import static com.l.constants.PromptConstant.*;
+
 public class MessageUtils {
 
 	private volatile static MessageUtils instance = null;
@@ -41,10 +40,7 @@ public class MessageUtils {
 
 	private MessageUtils() {
 		mContext = LApplication.appContext;
-		mTextToast = new Toast(mContext);
-		mImgToast = new Toast(mContext);
-		mTextToast.setGravity(Gravity.CENTER, 0, 0);
-		mImgToast.setGravity(Gravity.CENTER, 0, 0);
+
 	}
 
 	public void toastLong(int resid) {
@@ -78,51 +74,23 @@ public class MessageUtils {
 		mImgToast.setView(ll);
 		mImgToast.show();
 	}
-	private void showMessage(final String msg, final int len) {
-		Activity currentActivity = LActivityManager.getInstance().getCurrentActivity();
-		if (CheckUtils.isNullOrEmpty(mTextToast)) {
-			LogUtils.getInstance().e("Toast" + ERROR);
-		} else {
-			new Thread(new Runnable() {
-				public void run() {
-					LApplication.appHandler.post(new Runnable() {
-						@Override
-						public void run() {
-							synchronized (LActivityManager.getInstance().getCurrentActivity()) {
-								if (mTextToast != null) {
-									mTextToast.cancel();
-								} else {
-									mTextToast.setText(msg);
-									mTextToast.setDuration(len);
-								}
-								mTextToast.show();
-							}
-						}
-					});
-				}
-			}).start();
+
+	private void showMessage(String msg, int len) {
+		if (!CheckUtils.isNullOrEmpty(mTextToast)) {
+			mTextToast.cancel();
 		}
+		mTextToast = Toast.makeText(LActivityManager.getInstance()
+				.getCurrentActivity(), msg, len);
+		mTextToast.show();
 	}
 
-	private Dialog alertDialog;
-	private Builder aBuilder;
-
 	public void showCollapseDialog(String message) {
-		if (CheckUtils.isNullOrEmpty(aBuilder)) {
-			aBuilder = new AlertDialog.Builder(mContext).setTitle(
-					INFORMATION_ERROR).setPositiveButton(CANCEL,
-					new OnClickListener() {
-						@Override
-						public void onClick(DialogInterface arg0, int arg1) {
-							alertDialog.dismiss();
-						}
-					});
-		}
-		aBuilder.setMessage(message);
-		alertDialog = aBuilder.create();
-		alertDialog.setCanceledOnTouchOutside(false);
-		alertDialog.getWindow().setType(
+		ReportLogDialog instrance = ReportLogDialog
+				.getInstrance(LApplication.appContext);
+		instrance.setCanceledOnTouchOutside(false);
+		instrance.getWindow().setType(
 				WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-		alertDialog.show();
+		instrance.setLogInfo(message);
+		instrance.show();
 	}
 }
