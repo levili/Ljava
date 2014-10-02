@@ -1,7 +1,7 @@
 package com.l.utils;
 
-import com.l.activity.LActivityManager;
-import com.l.activity.LApplication;
+import com.l.base.ui.LActivityManager;
+import com.l.base.ui.LApplication;
 import com.l.widget.ReportLogDialog;
 
 import android.app.AlertDialog;

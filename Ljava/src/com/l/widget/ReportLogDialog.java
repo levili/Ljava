@@ -1,6 +1,6 @@
 package com.l.widget;
 
-import com.l.activity.LActivityManager;
+import com.l.base.ui.LActivityManager;
 import com.l.utils.CheckUtils;
 import com.library.ljava.R;
 import android.app.Dialog;

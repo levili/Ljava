@@ -1,4 +1,4 @@
-package com.l.activity;
+package com.l.base.ui;
 
 import android.view.View;
 import android.view.View.OnClickListener;

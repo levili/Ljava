@@ -1,6 +1,7 @@
-package com.l.activity;
+package com.l.base.ui;
 
-import com.l.activity.LBaseFragment.FragmentCallBack;
+import com.l.base.ui.LBaseFragment.FragmentCallBack;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;

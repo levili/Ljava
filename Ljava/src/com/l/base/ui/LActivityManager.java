@@ -1,4 +1,4 @@
-package com.l.activity;
+package com.l.base.ui;
 
 import java.util.Stack;
 
@@ -26,7 +26,6 @@ public class LActivityManager {
 		}
 		return instance;
 	}
-
 	private LActivityManager() {
 	}
 
@@ -124,11 +123,8 @@ public class LActivityManager {
 	public void AppExit() {
 		try {
 			finishAllActivity();
-			ActivityManager activityMgr = (ActivityManager) getCurrentActivity()
-					.getSystemService(Context.ACTIVITY_SERVICE);
-			activityMgr.killBackgroundProcesses(getCurrentActivity()
-					.getPackageName());
-			System.exit(0);
+			android.os.Process.killProcess(android.os.Process.myPid());
+			System.exit(1);
 		} catch (Exception e) {
 			System.exit(0);
 		}

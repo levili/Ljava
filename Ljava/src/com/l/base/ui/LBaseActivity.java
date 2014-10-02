@@ -1,4 +1,4 @@
-package com.l.activity;
+package com.l.base.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
