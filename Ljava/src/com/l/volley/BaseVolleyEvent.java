@@ -15,18 +15,19 @@ import com.l.constants.ParameteConstant;
 import com.l.utils.CheckUtils;
 import com.l.utils.LogUtils;
 
-public abstract class BaseVolleyEvent<T> {
+import de.greenrobot.event.EventBus;
+
+@SuppressWarnings("rawtypes")
+public abstract class BaseVolleyEvent<T extends BaseVolleyEvent> {
 	protected String action;
 	protected String call;
-	protected T data;
-
-	public BaseVolleyEvent(String action, String call, T data) {
+	protected RequestQueue queue;
+	public BaseVolleyEvent(String action, String call) {
 		super();
 		this.action = action;
 		this.call = call;
-		this.data = data;
 	}
-
+	
 	private RequestQueue getQueue(Context c) {
 		RequestQueue requestQueue = null;
 		if (c != null) {
@@ -47,37 +48,23 @@ public abstract class BaseVolleyEvent<T> {
 		return requestQueue;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unused" })
-	private StringRequest getGsonRequest(BaseVolleyEvent event) {
-		GsonRequest request = new GsonRequest<T>(ParameteConstant.ROOT_URL+event.action+event.call, data.getClass(), data, new Response.Listener<BaseVolleyEvent>() {
-			@Override
-			public void onResponse(BaseVolleyEvent response) {
-				
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		return null;
-	}
-
-	@SuppressWarnings({ "rawtypes", "unused" })
-	public boolean LVolleyRequest(Context c,
-			Class<? extends BaseVolleyEvent> Levent) {
-		try {
-			if (CheckUtils.isNullOrEmpty(c)) {
-				return false;
-			} else {
-				RequestQueue queue = getQueue(c);
-				BaseVolleyEvent newInstance = Levent.newInstance();
-			}
-		} catch (Exception e) {
-			LogUtils.getInstance().e("Construction Error");
-			return false;
-		}
+	public boolean LVolleyRequest(Context c) {
+		queue = getQueue(c);
+		GsonRequest<T> request = new GsonRequest<T>(this,
+				this.getClass(), new Response.Listener<T>() {
+					@Override
+					public void onResponse(T response) {
+						LogUtils.getInstance().i("请求成功,已回送");
+						EventBus.getDefault().post(response);
+					}
+				}, new Response.ErrorListener() {  
+		            @Override  
+		            public void onErrorResponse(VolleyError error) { 
+		            	LogUtils.getInstance().i("请求失敗,已回滾");
+						EventBus.getDefault().post(error);
+		            }  
+		        });
+		queue.add(request);
 		return false;
 	}
 }
